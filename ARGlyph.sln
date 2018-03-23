@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARGlyph", "Assembly-CSharp.csproj", "{900B8E21-7108-2117-4929-827FA3B60F47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARGlyph", "Assembly-CSharp-Editor.csproj", "{EE62C1F4-26E2-B040-FE30-9AF882258569}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{900B8E21-7108-2117-4929-827FA3B60F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{900B8E21-7108-2117-4929-827FA3B60F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{900B8E21-7108-2117-4929-827FA3B60F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{900B8E21-7108-2117-4929-827FA3B60F47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE62C1F4-26E2-B040-FE30-9AF882258569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE62C1F4-26E2-B040-FE30-9AF882258569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE62C1F4-26E2-B040-FE30-9AF882258569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE62C1F4-26E2-B040-FE30-9AF882258569}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
