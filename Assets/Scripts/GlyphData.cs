@@ -17,6 +17,9 @@ namespace HoloGlyph{
         public string channel = HoloGlyph.VizGlyph.UNDEFINED;
         public string value = HoloGlyph.VizGlyph.UNDEFINED;
         public string normal_value = HoloGlyph.VizGlyph.UNDEFINED;
+        public string opacity = HoloGlyph.VizGlyph.UNDEFINED;
+        public string def_color = HoloGlyph.VizGlyph.UNDEFINED;
+        public string size = HoloGlyph.VizGlyph.UNDEFINED;
         //public string range_color = HoloGlyph.VizGlyph.UNDEFINED;//concatenated color
 
         List<GlyphData> _fields;

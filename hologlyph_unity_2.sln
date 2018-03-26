@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hologlyph_unity_2", "Assembly-CSharp.csproj", "{38D1D995-4017-B871-4E6F-DA587E8C5F86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hologlyph_unity_2", "Assembly-CSharp-Editor.csproj", "{DA9FE3E3-EE22-76CA-94F5-7F9CF0611DB2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38D1D995-4017-B871-4E6F-DA587E8C5F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D1D995-4017-B871-4E6F-DA587E8C5F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D1D995-4017-B871-4E6F-DA587E8C5F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D1D995-4017-B871-4E6F-DA587E8C5F86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9FE3E3-EE22-76CA-94F5-7F9CF0611DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9FE3E3-EE22-76CA-94F5-7F9CF0611DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9FE3E3-EE22-76CA-94F5-7F9CF0611DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9FE3E3-EE22-76CA-94F5-7F9CF0611DB2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
