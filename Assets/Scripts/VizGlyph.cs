@@ -16,7 +16,7 @@ namespace HoloGlyph{
         bool readyForDataUpdate = false;
         bool verbose = true;
         public static string UNDEFINED = "undefined";
-        public static float SIZE_UNIT_SCALE_FACTOR = 1.0f / 1.0f;    // Each unit in the specs is 1 cm.
+        public static float SIZE_UNIT_SCALE_FACTOR = 1.0f / 10.0f;    // Each unit in the specs is 1 cm.
         public static float DEFAULT_VIS_DIMS = 500.0f;
         //public Text myText;
 
@@ -70,7 +70,6 @@ namespace HoloGlyph{
                     
                     ConstructGlyph(k, count, "1");
                     ConstructGlyph(k, count, "0");
-                    ConstructText(k, count);
                     count++;
                 }
             }
@@ -78,36 +77,18 @@ namespace HoloGlyph{
             //Debug.Log("visualized " + count.ToString() + " items");     
         }
 
-        void ConstructText(GlyphData glyphdata, int counts)
+        void ConstructText(GlyphData glyphdata, GameObject glyphprefabs, int counts)
         {
             float sizing;
             float.TryParse(string.Format(glyphdata.size), out sizing);
+            sizing=sizing*SIZE_UNIT_SCALE_FACTOR;
+
             if(Marker == glyphdata.marker){
                 LoadTextGlyph("text");
-                GameObject TextInstance = InstantiateGlyph(textPrefab, gameObject.transform);
+                GameObject TextInstance = InstantiateGlyph(textPrefab, glyphprefabs.transform);
                 String _sensor_name = "";
                 TextMesh textMesh = TextInstance.GetComponent(typeof(TextMesh)) as TextMesh;
-                TextInstance.transform.localScale = new Vector3(sizing, sizing, sizing); //it'll be changed later!
-
-                if(glyphdata.mark=="Sphere" && glyphdata.one_glyph == "0")
-                { 
-                  TextInstance.transform.localEulerAngles = new Vector3(90f, 0f, -180f); 
-                  TextInstance.transform.localPosition += new Vector3(-0.5f, 0, 0);
-                }
-
-                if(glyphdata.mark=="Sphere")
-                { 
-                  TextInstance.transform.localEulerAngles = new Vector3(90f, 0f, -90f); 
-                }
-
-                if(glyphdata.mark=="Cylinder")
-                { 
-                  TextInstance.transform.localEulerAngles = new Vector3(90f, 90f, -90f); 
-                }
-
-                
-                TextInstance.transform.localPosition = new Vector3(0.8f, 0f, 0.5f); 
-
+                TextInstance.transform.localScale = new Vector3(sizing, sizing, sizing); 
 
                 if (glyphdata.one_glyph == "1")
                 {
@@ -124,13 +105,15 @@ namespace HoloGlyph{
                 else
                 {
                     textMesh.text = glyphdata.sensor_name+" : "+glyphdata.normal_value;
-                    TextInstance.transform.localPosition += new Vector3(counts, 0, 0);
+                    //TextInstance.transform.localPosition += new Vector3(counts, 0, 0);
                     Debug.Log("NOT ONEGLYPH Mark "+glyphdata.mark+" Text: "+glyphdata.sensor_name+" oneglyph kah? "+glyphdata.normal_value);
                     textMesh.characterSize = 0.5f;
                 }
             
-            
-            TextInstance.transform.localPosition += new Vector3(0, 0, (TextInstance.transform.localScale[2]-TextInstance.transform.localScale[1]));
+            textMesh.anchor = TextAnchor.MiddleCenter;
+            float offsetPosY = ((glyphprefabs.transform.position.y - (0.7f))*SIZE_UNIT_SCALE_FACTOR);
+            Vector3 offsetPos = new Vector3(0, offsetPosY, 0);
+            TextInstance.transform.localPosition = offsetPos;
             
                
 
@@ -143,6 +126,8 @@ namespace HoloGlyph{
             float sizing;
             float.TryParse(string.Format(glyphdata.size), out sizing);
 
+            sizing=sizing*SIZE_UNIT_SCALE_FACTOR;
+
             Debug.Log("GLYPH : " + glyphdata.mark);
             Debug.Log("COUNTS : " + counts);
 
@@ -152,23 +137,11 @@ namespace HoloGlyph{
                 GameObject glyphInstance = InstantiateGlyph(glyphPrefab, gameObject.transform);
 
                 glyphInstance.transform.localScale = new Vector3(sizing, sizing, sizing); //it'll be changed later!
-                glyphInstance.transform.localEulerAngles = new Vector3(90, 0f, 0f);
                 SetChannelValue(glyphInstance, "color", glyphdata.def_color);
 
                 Debug.Log("COLOR MARKER :"+ glyphdata.opacity);
                 Debug.Log("COLOR MARKER :"+ glyphdata.def_color);
                 Debug.Log("VALUE :"+ glyphdata.value);
-                
-                if(glyphdata.mark=="Sphere")
-                { 
-                  glyphInstance.transform.localPosition = new Vector3(-1f, 0f, 0f);  
-                }
-
-                if(glyphdata.mark=="Cylinder" && glyphdata.one_glyph == "1")
-                { 
-                  glyphInstance.transform.localPosition = new Vector3(-0.5f, 0f, -1f);  
-                }
-
                 
                 if (glyphdata.one_glyph == "1")
                 {
@@ -181,6 +154,9 @@ namespace HoloGlyph{
                                     
                                     if ( f.channel == "height")
                                     { SetChannelValue(glyphInstance, "opacity", "0.5"); }
+                                    else{
+                                        glyphInstance.SetActive(false);
+                                    }
 
                                 }
                                 else
@@ -188,7 +164,7 @@ namespace HoloGlyph{
                                     SetChannelValue(glyphInstance, f.channel, f.value);
                                     if ( f.channel == "height")
                                     {        
-                                        glyphInstance.transform.localPosition += new Vector3(0, 0, (glyphInstance.transform.localScale[2]-glyphInstance.transform.localScale[1]));
+                                        glyphInstance.transform.localPosition += new Vector3(0, (SIZE_UNIT_SCALE_FACTOR*((sizing/2f)*-1f)), 0);
                                     }
                                 }
                                 
@@ -205,23 +181,28 @@ namespace HoloGlyph{
                       {
                         if ( glyphdata.channel == "height")
                         { SetChannelValue(glyphInstance, "opacity", "0.5"); }
+                        else{
+                            glyphInstance.SetActive(false);
+                            }
                       }
                       else
                       {
                           SetChannelValue(glyphInstance, glyphdata.channel, glyphdata.value);
                           if ( glyphdata.channel == "height")
                           {
-                              glyphInstance.transform.localPosition += new Vector3(0, 0, (glyphInstance.transform.localScale[2]-glyphInstance.transform.localScale[1]));
+                              glyphInstance.transform.localPosition += new Vector3(0, (SIZE_UNIT_SCALE_FACTOR*((sizing/2f)*-1f)), 0);
                           }
                       }  
+                
+                      glyphInstance.transform.localPosition += new Vector3(SIZE_UNIT_SCALE_FACTOR*counts, 0, 0);
                 }
-                glyphInstance.transform.localPosition += new Vector3(counts, 0, 0);
-                SetChannelValue(glyphInstance, "opacity", glyphdata.opacity);
-                if (ruler == "1")
-                      {
-                        if ( glyphdata.channel != "height")
-                        { glyphInstance.SetActive(false); }
-                      }
+
+                if (ruler != "1")
+                {
+                    SetChannelValue(glyphInstance, "opacity", glyphdata.opacity);
+                    ConstructText(glyphdata, glyphInstance, counts);
+                }
+                
 
             }
 
@@ -336,10 +317,6 @@ namespace HoloGlyph{
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["max_val"].Value),out data_max);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["min_val"].Value),out data_min);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["opacity"].Value).Substring(0, string.Format(response[i]["sensor"][j].AsObject["opacity"].Value).Length-1),out opacity);
-                            
-                            //value.Substring(14, value.Length-14)
-                            
-                            //Debug.Log("COCACOLOR " + string.Format(response[i]["sensor"][j].AsObject["def_color"].Value));
 
                             if (data_max < data_value) {data_max = data_value;}
                             
@@ -374,6 +351,8 @@ namespace HoloGlyph{
                                         
                 }
 
+                gameObject.transform.localEulerAngles = new Vector3(90, 90, 0);
+                gameObject.transform.localPosition = new Vector3(0.8f*SIZE_UNIT_SCALE_FACTOR, 0, 0);
 
         } 
 
