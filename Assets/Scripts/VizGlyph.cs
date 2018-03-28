@@ -16,7 +16,7 @@ namespace HoloGlyph{
         bool readyForDataUpdate = false;
         bool verbose = true;
         public static string UNDEFINED = "undefined";
-        public static float SIZE_UNIT_SCALE_FACTOR = 1.0f / 10.0f;    // Each unit in the specs is 1 cm.
+        public static float SIZE_UNIT_SCALE_FACTOR = 1.0f / 1.0f;    // Each unit in the specs is 1 cm.
         public static float DEFAULT_VIS_DIMS = 500.0f;
         //public Text myText;
 
@@ -82,13 +82,14 @@ namespace HoloGlyph{
             float sizing;
             float.TryParse(string.Format(glyphdata.size), out sizing);
             sizing=sizing*SIZE_UNIT_SCALE_FACTOR;
+            Debug.Log("SIZE OF THE OBJECT" +sizing);
 
             if(Marker == glyphdata.marker){
                 LoadTextGlyph("text");
                 GameObject TextInstance = InstantiateGlyph(textPrefab, glyphprefabs.transform);
                 String _sensor_name = "";
                 TextMesh textMesh = TextInstance.GetComponent(typeof(TextMesh)) as TextMesh;
-                TextInstance.transform.localScale = new Vector3(sizing, sizing, sizing); 
+                //TextInstance.transform.localScale = new Vector3(sizing, sizing, sizing); 
 
                 if (glyphdata.one_glyph == "1")
                 {
@@ -139,13 +140,16 @@ namespace HoloGlyph{
                 glyphInstance.transform.localScale = new Vector3(sizing, sizing, sizing); //it'll be changed later!
                 SetChannelValue(glyphInstance, "color", glyphdata.def_color);
 
-                Debug.Log("COLOR MARKER :"+ glyphdata.opacity);
-                Debug.Log("COLOR MARKER :"+ glyphdata.def_color);
-                Debug.Log("VALUE :"+ glyphdata.value);
+                //Debug.Log("COLOR MARKER :"+ glyphdata.opacity);
+                //Debug.Log("COLOR MARKER :"+ glyphdata.def_color);
+                //Debug.Log("VALUE :"+ glyphdata.value);
                 
+
                 if (glyphdata.one_glyph == "1")
                 {
-                    
+                    //Debug.Log("SIZE VALUE of ONE MARKER:"+ sizing);
+                    //Debug.Log("SIZE VALUE of ONE MARKER:"+ glyphInstance.transform.localScale);
+
                     foreach(GlyphData f in glyphdata.Fields)
                            {
                                 float.TryParse(string.Format(f.value), out val);
@@ -153,7 +157,7 @@ namespace HoloGlyph{
                                 {
                                     
                                     if ( f.channel == "height")
-                                    { SetChannelValue(glyphInstance, "opacity", "0.5"); }
+                                    { SetChannelValue(glyphInstance, "opacity", "0.1"); }
                                     else{
                                         glyphInstance.SetActive(false);
                                     }
@@ -161,10 +165,14 @@ namespace HoloGlyph{
                                 }
                                 else
                                 {
-                                    SetChannelValue(glyphInstance, f.channel, f.value);
+                                    
                                     if ( f.channel == "height")
                                     {        
                                         glyphInstance.transform.localPosition += new Vector3(0, (SIZE_UNIT_SCALE_FACTOR*((sizing/2f)*-1f)), 0);
+                                    }
+                                    else{
+                                        Debug.Log("AS ONE GLYPH :" + f.channel +" VALUE "+f.value);
+                                        SetChannelValue(glyphInstance, f.channel, f.value);
                                     }
                                 }
                                 
@@ -176,11 +184,12 @@ namespace HoloGlyph{
                 }
                 else
                 {
+                    Debug.Log("SIZE VALUE of MULTIPLE MARKER:"+ glyphInstance.transform.localScale);
                     float.TryParse(string.Format(glyphdata.value), out val);
                     if (ruler == "1")
                       {
                         if ( glyphdata.channel == "height")
-                        { SetChannelValue(glyphInstance, "opacity", "0.5"); }
+                        { SetChannelValue(glyphInstance, "opacity", "0.1"); }
                         else{
                             glyphInstance.SetActive(false);
                             }
@@ -281,10 +290,12 @@ namespace HoloGlyph{
                             float data_max;
                             float data_min;
                             float opacity;
+                            //float set_size;
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["data"].Value),out data_value);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["max_val"].Value),out data_max);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["min_val"].Value),out data_min);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["opacity"].Value).Substring(0, string.Format(response[i]["sensor"][j].AsObject["opacity"].Value).Length-1),out opacity);
+                            //float.TryParse(string.Format(response[i]["sensor"][j].AsObject["set_size"].Value),out set_size);
 
                             if (data_max < data_value) {data_max = data_value;}
                             //Debug.Log("COCACOLOR " + string.Format(response[i]["sensor"][j].AsObject["def_color"].Value));
@@ -299,7 +310,8 @@ namespace HoloGlyph{
                             }
                             _child.one_glyph = _one_glyph;
                             _root.opacity = (opacity/100).ToString("R");
-                            _root.size = central_size;
+                            //_root.size = central_size;
+                            _root.size = string.Format(response[i]["sensor"][j].AsObject["set_size"].Value);//set_size;
                             _root.def_color = string.Format(response[i]["sensor"][j].AsObject["def_color"].Value);
                             _root.mark = _glyph;
                             _root.marker = _marker;
@@ -313,9 +325,11 @@ namespace HoloGlyph{
                             float data_max;
                             float data_min;
                             float opacity;
+                            //float set_size;
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["data"].Value),out data_value);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["max_val"].Value),out data_max);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["min_val"].Value),out data_min);
+                            //float.TryParse(string.Format(response[i]["sensor"][j].AsObject["set_size"].Value),out set_size);
                             float.TryParse(string.Format(response[i]["sensor"][j].AsObject["opacity"].Value).Substring(0, string.Format(response[i]["sensor"][j].AsObject["opacity"].Value).Length-1),out opacity);
 
                             if (data_max < data_value) {data_max = data_value;}
@@ -328,7 +342,9 @@ namespace HoloGlyph{
                             _root.marker = _marker;
                             _root.def_color = string.Format(response[i]["sensor"][j].AsObject["def_color"].Value);
                             _root.opacity = (opacity/100).ToString("R");
-                            _root.size = central_size;
+                            //_root.size = central_size;
+                            _root.size = string.Format(response[i]["sensor"][j].AsObject["set_size"].Value);
+                            //set_size;
                             Debug.Log("OPACITY "+_root.opacity); 
                             _root.channel = string.Format(response[i]["sensor"][j].AsObject["channel"].Value);
                             if(_root.channel=="color") {
@@ -350,7 +366,9 @@ namespace HoloGlyph{
                         }
                                         
                 }
-
+                //float sizing;
+                //float.TryParse(string.Format(glyphdata.size), out sizing);
+                //TextInstance.transform.localScale = new Vector3(sizing, sizing, sizing); 
                 gameObject.transform.localEulerAngles = new Vector3(90, 90, 0);
                 gameObject.transform.localPosition = new Vector3(0.8f*SIZE_UNIT_SCALE_FACTOR, 0, 0);
 
@@ -478,10 +496,11 @@ namespace HoloGlyph{
             Vector3 initPos = glyphPrefab.transform.localPosition;
 
             Vector3 curScale = glyphPrefab.transform.localScale;
+            Debug.Log("SET SIZE CURRENT SCALE :"+ curScale);
 
             glyphPrefab.GetComponent<MeshFilter>().mesh.RecalculateBounds();
             Vector3 origMeshSize = glyphPrefab.GetComponent<MeshFilter>().mesh.bounds.size;
-            //Debug.Log("SET SIZE HEIGHT :"+ origMeshSize[dim]);
+            
 
 
 
