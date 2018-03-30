@@ -12,7 +12,7 @@ namespace HoloGlyph{
         public string URLFormatString = "http://localhost:3000/datatmp";
         public string Marker = "Mark-00";
         public string central_size = "0.4";
-        private int m_secs_delay_per_server_wait = 5;
+        private int m_secs_delay_per_server_wait = 1/10;
         bool readyForDataUpdate = false;
         bool verbose = true;
         public static string UNDEFINED = "undefined";
